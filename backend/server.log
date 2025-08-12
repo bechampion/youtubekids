@@ -1,0 +1,4 @@
+Starting combined media scanner and file server on http://localhost:8080
+API endpoint: /api/media
+Static files: serving from project root
+Scanning for WebM/MP4/WebP files
