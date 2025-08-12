@@ -84,14 +84,14 @@ let videosByMainCategory = {};
 function createMainCategoryNavigation() {
 	// Group videos with thumbnails by folder
 	const videosWithThumbs = mediaFiles.filter(media => media.has_thumb && media.thumb_path);
-	
+
 	videosByMainCategory = { 'all': videosWithThumbs };
-	
+
 	videosWithThumbs.forEach(media => {
 		// Extract folder name from path
 		const pathParts = media.video_path.split('/');
 		const folderName = pathParts[pathParts.length - 2] || 'Unknown';
-		
+
 		if (!videosByMainCategory[folderName]) {
 			videosByMainCategory[folderName] = [];
 		}
@@ -101,17 +101,17 @@ function createMainCategoryNavigation() {
 	// Create category buttons
 	const categoryButtons = document.getElementById('mainCategoryButtons');
 	const categoryNav = document.getElementById('mainCategoryNav');
-	
+
 	if (Object.keys(videosByMainCategory).length > 2) { // More than just 'all' and one category
 		categoryButtons.innerHTML = '';
-		
+
 		// Add "All" button first
 		const allButton = document.createElement('div');
 		allButton.className = 'main-category-btn active';
 		allButton.textContent = `All (${videosByMainCategory['all'].length})`;
 		allButton.onclick = () => filterMainVideos('all');
 		categoryButtons.appendChild(allButton);
-		
+
 		// Add category buttons
 		Object.keys(videosByMainCategory)
 			.filter(category => category !== 'all')
@@ -124,7 +124,7 @@ function createMainCategoryNavigation() {
 				button.dataset.category = category;
 				categoryButtons.appendChild(button);
 			});
-		
+
 		categoryNav.style.display = 'block';
 	} else {
 		categoryNav.style.display = 'none';
@@ -135,11 +135,11 @@ function createMainCategoryNavigation() {
 function filterMainVideos(category) {
 	currentMainFilter = category;
 	renderVideoGrid(category);
-	
+
 	// Update active button
 	const buttons = document.querySelectorAll('.main-category-btn');
 	buttons.forEach(btn => btn.classList.remove('active'));
-	
+
 	if (category === 'all') {
 		const allButton = buttons[0]; // First button is always "All"
 		if (allButton) allButton.classList.add('active');
@@ -425,7 +425,7 @@ function closeOptionsModal() {
 function applyTheme() {
 	const savedTheme = localStorage.getItem('theme');
 	const isNight = savedTheme ? savedTheme === 'night' : true; // Default to night
-	
+
 	if (isNight) {
 		document.body.classList.add('night-theme');
 		updateToggleButton(false); // false = night theme
@@ -438,7 +438,7 @@ function applyTheme() {
 // Toggle between day and night themes
 function toggleTheme() {
 	const isCurrentlyNight = document.body.classList.contains('night-theme');
-	
+
 	if (isCurrentlyNight) {
 		// Switch to day
 		document.body.classList.remove('night-theme');
@@ -597,7 +597,7 @@ function appendMoreVideos() {
 	} else {
 		videosToShuffle = videosByMainCategory[currentMainFilter] || [];
 	}
-	
+
 	const shuffledMedia = [...videosToShuffle].sort(() => Math.random() - 0.5);
 
 	// Get current number of videos in grid for proper numbering
@@ -642,7 +642,7 @@ function showBadVideos() {
 		// Extract folder name from path
 		const pathParts = media.video_path.split('/');
 		const folderName = pathParts[pathParts.length - 2] || 'Unknown'; // Get parent folder
-		
+
 		if (!videosByCategory[folderName]) {
 			videosByCategory[folderName] = [];
 		}
@@ -667,7 +667,7 @@ function showBadVideos() {
 	categories.forEach(category => {
 		videoListHTML += `<div class="category-section" data-category="${category}">
 			<h4 class="category-header">${category} (${videosByCategory[category].length} videos)</h4>`;
-		
+
 		videosByCategory[category].forEach(media => {
 			const kidFriendlyTitle = generateKidFriendlyTitle();
 			const fileName = media.video_path.split('/').pop();
@@ -891,7 +891,7 @@ function showAllCategories() {
 	sections.forEach(section => {
 		section.style.display = 'block';
 	});
-	
+
 	// Update active state
 	const links = document.querySelectorAll('.category-link');
 	links.forEach(link => {
@@ -899,7 +899,7 @@ function showAllCategories() {
 		link.style.background = '#f0f0f0';
 		link.style.color = 'initial';
 	});
-	
+
 	const allLink = document.querySelector('.category-link[onclick="showAllCategories()"]');
 	if (allLink) {
 		allLink.classList.add('active');
@@ -918,7 +918,7 @@ function showCategoryVideos(categoryName) {
 			section.style.display = 'none';
 		}
 	});
-	
+
 	// Update active state
 	const links = document.querySelectorAll('.category-link');
 	links.forEach(link => {
@@ -926,7 +926,7 @@ function showCategoryVideos(categoryName) {
 		link.style.background = '#f0f0f0';
 		link.style.color = 'initial';
 	});
-	
+
 	const activeLink = document.querySelector(`[data-category="${categoryName}"]`);
 	if (activeLink) {
 		activeLink.classList.add('active');
@@ -945,7 +945,7 @@ function generateRandomSkyElements() {
 	function getRandomPosition() {
 		const positions = [];
 		const centerAvoidZone = { x: [40, 60], y: [40, 60] }; // Avoid center 40-60% area
-		
+
 		for (let i = 0; i < 15; i++) { // Generate 15 different positions
 			let x, y;
 			do {
@@ -961,7 +961,7 @@ function generateRandomSkyElements() {
 	}
 
 	const positions = getRandomPosition();
-	
+
 	// Generate CSS for day theme (sun + clouds)
 	const sunPos = positions[0];
 	const dayThemeCSS = `
@@ -973,21 +973,21 @@ function generateRandomSkyElements() {
 				
 				/* Clouds at random positions */
 				${positions.slice(1, 10).map((pos, index) => {
-					const sizes = [
-						[80, 45], [60, 35], [70, 40], [50, 30], [40, 25],
-						[75, 50], [55, 35], [65, 40], [85, 50]
-					];
-					const [width, height] = sizes[index] || [60, 35];
-					const opacity = 0.7 + Math.random() * 0.2;
-					return `radial-gradient(ellipse ${width}px ${height}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.7}) 40%, rgba(255, 255, 255, ${opacity * 0.3}) 70%, transparent 85%)`;
-				}).join(',\n\t\t\t\t')};
+		const sizes = [
+			[80, 45], [60, 35], [70, 40], [50, 30], [40, 25],
+			[75, 50], [55, 35], [65, 40], [85, 50]
+		];
+		const [width, height] = sizes[index] || [60, 35];
+		const opacity = 0.7 + Math.random() * 0.2;
+		return `radial-gradient(ellipse ${width}px ${height}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.7}) 40%, rgba(255, 255, 255, ${opacity * 0.3}) 70%, transparent 85%)`;
+	}).join(',\n\t\t\t\t')};
 		}`;
 
 	// Generate CSS for night theme (moon + planets + stars)
 	const moonPos = positions[0];
 	const planetPositions = positions.slice(1, 4);
 	const starPositions = positions.slice(4, 15);
-	
+
 	const nightThemeCSS = `
 		body.night-theme::before {
 			background-image:
@@ -1011,20 +1011,20 @@ function generateRandomSkyElements() {
 				
 				/* Bright Stars at random positions */
 				${starPositions.map((pos, index) => {
-					const sizes = [3, 2.5, 3, 2.5, 3, 2, 2, 2, 2, 1.5, 1];
-					const size = sizes[index] || 1;
-					const opacity = 0.8 + Math.random() * 0.2;
-					return `radial-gradient(circle ${size}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.6}) 40%, transparent 70%)`;
-				}).join(',\n\t\t\t\t')},
+		const sizes = [3, 2.5, 3, 2.5, 3, 2, 2, 2, 2, 1.5, 1];
+		const size = sizes[index] || 1;
+		const opacity = 0.8 + Math.random() * 0.2;
+		return `radial-gradient(circle ${size}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.6}) 40%, transparent 70%)`;
+	}).join(',\n\t\t\t\t')},
 				
 				/* Additional scattered stars - INCREDIBLE GALAXY-LIKE STAR FIELD! */
-				${Array.from({length: 850}, () => {
-					const x = Math.floor(Math.random() * 95) + 5;
-					const y = Math.floor(Math.random() * 90) + 5;
-					const size = 0.3 + Math.random() * 1.4; // Maximum variety of sizes
-					const opacity = 0.15 + Math.random() * 0.8; // Full brightness spectrum
-					return `radial-gradient(circle ${size}px at ${x}% ${y}%, rgba(255, 255, 255, ${opacity}) 0%, transparent 50%)`;
-				}).join(',\n\t\t\t\t')};
+				${Array.from({ length: 850 }, () => {
+		const x = Math.floor(Math.random() * 95) + 5;
+		const y = Math.floor(Math.random() * 90) + 5;
+		const size = 0.3 + Math.random() * 1.4; // Maximum variety of sizes
+		const opacity = 0.15 + Math.random() * 0.8; // Full brightness spectrum
+		return `radial-gradient(circle ${size}px at ${x}% ${y}%, rgba(255, 255, 255, ${opacity}) 0%, transparent 50%)`;
+	}).join(',\n\t\t\t\t')};
 		}`;
 
 	// Generate CSS for video player backgrounds
@@ -1037,13 +1037,13 @@ function generateRandomSkyElements() {
 				
 				/* Clouds at random positions */
 				${positions.slice(1, 8).map((pos, index) => {
-					const sizes = [
-						[80, 45], [60, 35], [70, 40], [50, 30], [40, 25], [75, 50], [55, 35]
-					];
-					const [width, height] = sizes[index] || [60, 35];
-					const opacity = 0.7 + Math.random() * 0.2;
-					return `radial-gradient(ellipse ${width}px ${height}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.7}) 40%, rgba(255, 255, 255, ${opacity * 0.3}) 70%, transparent 85%)`;
-				}).join(',\n\t\t\t\t')};
+		const sizes = [
+			[80, 45], [60, 35], [70, 40], [50, 30], [40, 25], [75, 50], [55, 35]
+		];
+		const [width, height] = sizes[index] || [60, 35];
+		const opacity = 0.7 + Math.random() * 0.2;
+		return `radial-gradient(ellipse ${width}px ${height}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.7}) 40%, rgba(255, 255, 255, ${opacity * 0.3}) 70%, transparent 85%)`;
+	}).join(',\n\t\t\t\t')};
 		}`;
 
 	const videoPlayerNightCSS = `
@@ -1064,20 +1064,20 @@ function generateRandomSkyElements() {
 				
 				/* Bright Stars at random positions */
 				${starPositions.slice(0, 8).map((pos, index) => {
-					const sizes = [3, 2.5, 3, 2.5, 3, 2, 2, 2];
-					const size = sizes[index] || 2;
-					const opacity = 0.8 + Math.random() * 0.2;
-					return `radial-gradient(circle ${size}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.6}) 40%, transparent 70%)`;
-				}).join(',\n\t\t\t\t')},
+		const sizes = [3, 2.5, 3, 2.5, 3, 2, 2, 2];
+		const size = sizes[index] || 2;
+		const opacity = 0.8 + Math.random() * 0.2;
+		return `radial-gradient(circle ${size}px at ${pos.x}% ${pos.y}%, rgba(255, 255, 255, ${opacity}) 0%, rgba(255, 255, 255, ${opacity * 0.6}) 40%, transparent 70%)`;
+	}).join(',\n\t\t\t\t')},
 				
 				/* Additional scattered stars for video player - EPIC DENSE STAR FIELD! */
-				${Array.from({length: 500}, () => {
-					const x = Math.floor(Math.random() * 95) + 5;
-					const y = Math.floor(Math.random() * 90) + 5;
-					const size = 0.3 + Math.random() * 1.2; // Great variety of sizes
-					const opacity = 0.2 + Math.random() * 0.7; // Wide brightness range
-					return `radial-gradient(circle ${size}px at ${x}% ${y}%, rgba(255, 255, 255, ${opacity}) 0%, transparent 50%)`;
-				}).join(',\n\t\t\t\t')};
+				${Array.from({ length: 500 }, () => {
+		const x = Math.floor(Math.random() * 95) + 5;
+		const y = Math.floor(Math.random() * 90) + 5;
+		const size = 0.3 + Math.random() * 1.2; // Great variety of sizes
+		const opacity = 0.2 + Math.random() * 0.7; // Wide brightness range
+		return `radial-gradient(circle ${size}px at ${x}% ${y}%, rgba(255, 255, 255, ${opacity}) 0%, transparent 50%)`;
+	}).join(',\n\t\t\t\t')};
 		}`;
 
 	// Apply the generated CSS
