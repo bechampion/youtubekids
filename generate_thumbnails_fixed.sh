@@ -103,7 +103,7 @@ generate_thumbnail() {
     local min_time=$(echo "$duration * 0.1" | bc -l)
     local max_time=$(echo "$duration * 0.9" | bc -l)
     #local random_time=$(echo "$min_time + ($RANDOM / 32767) * ($max_time - $min_time)" | bc -l)
-    local random_time=$(( RANDOM % 1 + 30 ))
+    local random_time=0
     echo "   Random time: $random_time seconds (between $min_time and $max_time)"
     
     # Generate thumbnail with better error handling
