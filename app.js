@@ -179,9 +179,7 @@ function renderVideoGrid(filterCategory = 'all') {
 		videoCard.className = 'video-card';
 		videoCard.onclick = () => playVideo(media.video_path, kidFriendlyTitle);
 
-		// Get the relative path from the project root
-		const relativePath = media.thumb_path.replace('/home/jgarcia/Projects/youtubekids/', '');
-		const thumbnailUrl = `http://localhost:8080/${relativePath}`;
+		const thumbnailUrl = `http://localhost:8080/${media.thumb_path}`;
 
 		// Extract category for display
 		const pathParts = media.video_path.split('/');
@@ -226,9 +224,7 @@ function populateVideoSidebar(currentVideoPath) {
 		const sidebarKidTitle = generateKidFriendlyTitle();
 		sidebarCard.onclick = () => playVideo(media.video_path, sidebarKidTitle);
 
-		// Get thumbnail URL (we know it exists since we filtered for it)
-		const relativePath = media.thumb_path.replace('/home/jgarcia/Projects/youtubekids/', '');
-		const thumbnailUrl = `http://localhost:8080/${relativePath}`;
+		const thumbnailUrl = `http://localhost:8080/${media.thumb_path}`;
 
 		sidebarCard.innerHTML = `
 			<div class="sidebar-thumbnail" style="background-image: url('${thumbnailUrl}');"></div>
@@ -249,9 +245,7 @@ function playVideo(videoPath, title) {
 	const videoGridContainer = document.querySelector('.video-grid-container');
 	const floatingShapes = document.querySelector('.floating-shapes');
 
-	// Set video source from backend data using relative path
-	const relativePath = videoPath.replace('/home/jgarcia/Projects/youtubekids/', '');
-	videoSource.src = `http://localhost:8080/${relativePath}`;
+	videoSource.src = `http://localhost:8080/${videoPath}`;
 	videoTitle.textContent = title;
 
 	// Create random video effects for this video
@@ -322,8 +316,7 @@ document.addEventListener('keydown', function (e) {
 
 // Show video options menu
 function showVideoOptions(videoPath, title) {
-	const relativePath = videoPath.replace('/home/jgarcia/Projects/youtubekids/', '');
-	const videoUrl = `http://localhost:8080/${relativePath}`;
+	const videoUrl = `http://localhost:8080/${videoPath}`;
 
 	// Create download options modal
 	const modal = document.createElement('div');
@@ -331,7 +324,7 @@ function showVideoOptions(videoPath, title) {
 	modal.innerHTML = `
 		<div class="options-content">
 			<h3>${title}</h3>
-			<div class="option-item" onclick="downloadVideo('${videoUrl}', '${relativePath.split('/').pop()}')">
+			<div class="option-item" onclick="downloadVideo('${videoUrl}', '${videoPath.split('/').pop()}')">
 				📥 Download Video
 			</div>
 			<div class="option-item" onclick="copyVideoLink('${videoUrl}')">
@@ -610,9 +603,7 @@ function appendMoreVideos() {
 		videoCard.className = 'video-card';
 		videoCard.onclick = () => playVideo(media.video_path, kidFriendlyTitle);
 
-		// Get the relative path from the project root (we know thumbnail exists)
-		const relativePath = media.thumb_path.replace('/home/jgarcia/Projects/youtubekids/', '');
-		const thumbnailUrl = `http://localhost:8080/${relativePath}`;
+		const thumbnailUrl = `http://localhost:8080/${media.thumb_path}`;
 
 		videoCard.innerHTML = `
 			<div class="video-number">${currentVideoCount + index + 1}</div>

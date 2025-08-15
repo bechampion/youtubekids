@@ -86,21 +86,35 @@ func scanMediaFiles(rootDir string) (*ScanResult, error) {
 	videosWithThumbs := 0
 
 	for basename, videoPath := range videoFiles {
+		// Convert absolute paths to relative paths
+		relVideoPath, err := filepath.Rel(rootDir, videoPath)
+		if err != nil {
+			relVideoPath = videoPath // fallback to full path if rel fails
+		}
+
 		mediaFile := MediaFile{
 			Name:      basename,
-			VideoPath: videoPath,
+			VideoPath: relVideoPath,
 			HasThumb:  false,
 		}
 
 		// First try direct match
 		if thumbPath, exists := webpFiles[basename]; exists {
-			mediaFile.ThumbPath = thumbPath
+			relThumbPath, err := filepath.Rel(rootDir, thumbPath)
+			if err != nil {
+				relThumbPath = thumbPath // fallback to full path if rel fails
+			}
+			mediaFile.ThumbPath = relThumbPath
 			mediaFile.HasThumb = true
 			videosWithThumbs++
 		} else if mappedName, exists := thumbnailMapping[basename]; exists {
 			// Try mapped simplified name
 			if thumbPath, exists := webpFiles[mappedName]; exists {
-				mediaFile.ThumbPath = thumbPath
+				relThumbPath, err := filepath.Rel(rootDir, thumbPath)
+				if err != nil {
+					relThumbPath = thumbPath // fallback to full path if rel fails
+				}
+				mediaFile.ThumbPath = relThumbPath
 				mediaFile.HasThumb = true
 				videosWithThumbs++
 			}
