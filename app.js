@@ -3,7 +3,7 @@ let mediaFiles = [];
 // Fetch videos from backend
 async function fetchVideos() {
 	try {
-		const response = await fetch('http://localhost:8080/api/media');
+		const response = await fetch(`${window.location.origin}/api/media`);
 		const data = await response.json();
 		mediaFiles = data.media_files || [];
 		renderVideoGrid();
