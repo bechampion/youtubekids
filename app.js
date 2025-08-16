@@ -932,6 +932,11 @@ window.showCategoryVideos = showCategoryVideos;
 
 // Function to generate random sky elements
 function generateRandomSkyElements() {
+	// Skip complex background generation on mobile devices
+	if (window.innerWidth <= 480) {
+		return; // Mobile devices get simple gradients via CSS
+	}
+
 	// Generate random positions for celestial objects (avoiding center area for visibility)
 	function getRandomPosition() {
 		const positions = [];

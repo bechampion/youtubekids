@@ -3,7 +3,7 @@
 
 <head>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 	<title>Kids Video Player</title>
 	<style>
 		* {
@@ -1090,6 +1090,20 @@
 		}
 
 		@media (max-width: 480px) {
+			/* Disable complex background animations on mobile for performance */
+			body::before,
+			body.night-theme::before,
+			.video-player-page::before,
+			body.night-theme .video-player-page::before {
+				background-image: none !important;
+				background: linear-gradient(to bottom, #1976D2 0%, #1565C0 50%, #0D47A1 100%) !important;
+			}
+
+			body.night-theme,
+			body.night-theme .video-player-page {
+				background: linear-gradient(to bottom, #263238 0%, #1A252F 50%, #0F1419 100%) !important;
+			}
+
 			.video-grid {
 				grid-template-columns: repeat(2, minmax(140px, 1fr));
 				gap: 8px;
@@ -1109,6 +1123,29 @@
 				min-height: 28px;
 				margin-top: 6px;
 				font-size: 0.8rem;
+			}
+
+			/* Improve touch targets for mobile */
+			.back-arrow {
+				font-size: 3rem;
+				padding: 10px;
+			}
+
+			.theme-toggle,
+			.search-icon {
+				width: 48px;
+				height: 48px;
+				font-size: 1.4rem;
+			}
+
+			.profile-circle {
+				width: 48px;
+				height: 48px;
+			}
+
+			/* Simplify floating shapes on mobile */
+			.floating-shapes {
+				display: none;
 			}
 		}
 
